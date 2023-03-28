@@ -1,10 +1,8 @@
 USER_STATUS = {
+    'created': 'Не оформлена',
     'trial':'Пробный период',
-    'pending':'Ожидает получение настроек',
-    'executed': '',
-    'paid':'',
-    'expired':'',
-    'outdated':''
+    'paid':'Оплачена',
+    'expired':'Закончилась',
 }
 
 VPN_STATUS = {
