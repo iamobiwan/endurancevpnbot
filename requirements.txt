@@ -14,6 +14,7 @@ idna==3.4
 loguru==0.6.0
 magic-filter==1.0.9
 multidict==6.0.4
+psycopg2==2.9.5
 python-dotenv==1.0.0
 pytz==2023.2
 redis==4.5.3
