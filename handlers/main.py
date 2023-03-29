@@ -66,7 +66,7 @@ async def main_handler(message: types.Message):
         )
 
 
-def register_user_handlers(dp : Dispatcher):
+def register_main_handlers(dp : Dispatcher):
     dp.register_message_handler(start, commands=['start'])
     dp.register_message_handler(main_handler, commands=['main'])
     dp.register_callback_query_handler(main, text='main')
