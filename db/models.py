@@ -2,6 +2,7 @@ from sqlalchemy.orm import relationship
 import sqlalchemy as sql
 from .connect import Base
 
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -70,3 +71,10 @@ class Order(Base):
     deleted = sql.Column(sql.Boolean, default=False)
     created_at = sql.Column(sql.DateTime)
     updated_at = sql.Column(sql.DateTime)
+
+
+def to_dict(self):
+    """ Объект БД в словарь """
+    return {column.name: getattr(self, column.name, None) for column in self.__table__.columns}
+
+Base.to_dict = to_dict
