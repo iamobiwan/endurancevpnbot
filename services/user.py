@@ -1,6 +1,6 @@
 from aiogram import types
-from ..connect import session_maker
-from ..models import User
+from db.connect import session_maker
+from db.models import User
 from datetime import datetime
 from loader import logger
 
