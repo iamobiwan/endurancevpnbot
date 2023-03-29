@@ -8,6 +8,11 @@ def start_main():
     markup.row(button_dict.get('main'))
     return markup
 
+def back_main_keyboard():
+    markup = InlineKeyboardMarkup()
+    markup.row(button_dict.get('back_main'))
+    return markup
+
 def created_user_keyboard():
     markup = InlineKeyboardMarkup()
     button_list = [button_dict.get('trial'), button_dict.get('get_sub'), button_dict.get('get_discount')]

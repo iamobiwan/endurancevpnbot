@@ -35,7 +35,7 @@ async def main(callback: types.CallbackQuery, state: FSMContext):
             parse_mode='Markdown',
             reply_markup=expired_user_keyboard()
         )
-    if user.get('status') == 'created':
+    elif user.get('status') == 'created':
         await callback.message.edit_text(
             messages.MAIN_MENU_CREATED.format(name=user.get('name')),
             parse_mode='Markdown',
@@ -58,7 +58,7 @@ async def main_handler(message: types.Message, state: FSMContext):
                 parse_mode='Markdown',
                 reply_markup=expired_user_keyboard()
             )
-        if user.get('status') == 'created':
+        elif user.get('status') == 'created':
             await message.answer(
                 messages.MAIN_MENU_CREATED.format(name=user.get('name')),
                 parse_mode='Markdown',

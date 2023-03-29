@@ -1,7 +1,7 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
-from keyboards.inline.main import start_main
+from keyboards.inline.main import start_main, back_main_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
 from services.subscribe import update_sub_trial
 from db.models import User
@@ -23,7 +23,7 @@ async def trial(callback: types.CallbackQuery, state: FSMContext):
         user = await state.get_data()
         await callback.message.edit_text(
             messages.SUCCESS_TRIAL.format(date=user.get('expires_at')),
-            reply_markup=start_main()
+            reply_markup=back_main_keyboard()
         )
         logger.info(f'Пользователь {user.get("id")} активировал пробный период сроком до {user.get("expires_at")}')
 
