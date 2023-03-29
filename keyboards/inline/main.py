@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from db.models import User
 
 main_menu_button = InlineKeyboardButton(text='\U0001f5c3 Главное меню', callback_data = 'main')
-activate_trial_button = InlineKeyboardButton(text='\U0000231B Активировать пробный период', callback_data = 'activate_trial')
+activate_trial_button = InlineKeyboardButton(text='\U0000231B Активировать пробный период', callback_data = 'trial')
 my_sub_button = InlineKeyboardButton(text='\U00002b50 Моя подписка', callback_data = 'mysub')
 get_subscribe_button = InlineKeyboardButton(text='\U00002b50 Оформить подписку', callback_data = 'get_sub')
 extend_subscribe_button = InlineKeyboardButton(text='\U00002b50 Продлить подписку', callback_data = 'extend_sub')

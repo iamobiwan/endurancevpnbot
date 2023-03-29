@@ -1,0 +1,1 @@
+TRIAL_SUB_DAYS = 3
