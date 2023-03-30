@@ -28,11 +28,14 @@ async def check_promocode(message: types.Message, state: FSMContext, promocode: 
             return False
     
 def generate_promocode(callback: types.CallbackQuery):
-    promocode = ''.join(random.choice(string.ascii_uppercase) for i in range(settings.LEN_PROMOCODE))
     with session_maker() as session:
+        promocode = ''.join(random.choice(string.ascii_uppercase) for i in range(settings.LEN_PROMOCODE))
+        user_promocodes = [item.promocode for item in session.query(User.promocode)]
+        while promocode in user_promocodes:
+            user_promocodes = [item.promocode for item in session.query(User.promocode)]
         user = session.query(User).filter(User.telegram_id == callback.from_user.id).first()
         user.promocode = promocode
         user.updated_at = datetime.now()
         session.add(user)
         session.commit()
-    return promocode
+        return promocode

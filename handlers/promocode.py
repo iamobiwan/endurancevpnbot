@@ -53,6 +53,7 @@ async def get_promocode(callback: types.CallbackQuery, state: FSMContext):
         await state.update_data(
             promocode=promocode
         )
+    user_data = await state.get_data()
     await callback.message.edit_text(
         messages.APPLY_PROMOCODE.format(code=user_data.get('promocode')),
         parse_mode='Markdown',
