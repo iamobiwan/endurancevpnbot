@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.main import start_main, back_main_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
+from keyboards.inline.plan import plans_keyboard
 from services.subscribe import update_sub_trial
 from db.models import User
 from misc import status, messages
@@ -39,8 +40,12 @@ async def my_sub(callback: types.CallbackQuery, state: FSMContext):
         reply_markup=my_sub_keyboard()
     )
 
+async def get_subscribe(callback: types.CallbackQuery, state: FSMContext):
+    await callback.message.edit_text('Выберите длительность подписки:', reply_markup=plans_keyboard(callback))
+
 
 def register_sub_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(activate_trial, text='activate_trial', state='*')
     dp.register_callback_query_handler(my_sub, text='my_sub', state='*')
     dp.register_callback_query_handler(my_sub, text='back_my_sub', state='*')
+    dp.register_callback_query_handler(get_subscribe, regexp=r"(get_sub|extend_sub)", state='*')

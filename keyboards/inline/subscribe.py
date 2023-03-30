@@ -1,5 +1,4 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from db.models import User
+from aiogram.types import InlineKeyboardMarkup
 from ..buttons import button_dict
 
 def my_sub_keyboard():
