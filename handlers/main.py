@@ -4,6 +4,7 @@ from keyboards.inline.main import created_user_keyboard, start_main, main_keyboa
 from services.user import get_user, create_user
 from db.models import User
 from misc import status, messages
+from states import BotStates
 
 
 async def start(message : types.Message, state: FSMContext):
@@ -12,13 +13,12 @@ async def start(message : types.Message, state: FSMContext):
 
     if not user:
         user: User = create_user(message)
-
-    await state.update_data(
-        id=user.id,
-        telegram_id=user.telegram_id,
-        status=user.status,
-        name=user.name
-    )
+        await state.update_data(
+            id=user.id,
+            telegram_id=user.telegram_id,
+            status=user.status,
+            name=user.name
+        )
     await message.answer(
         messages.WELCOME,
         parse_mode='Markdown',
@@ -27,17 +27,17 @@ async def start(message : types.Message, state: FSMContext):
 
 async def main(callback: types.CallbackQuery, state: FSMContext):
     """ Главное меню (обработка c inline кнопки)"""
-    user = await state.get_data()
+    user_data = await state.get_data()
 
-    if user.get('status') in ['expired', 'outdated']:
+    if user_data.get('status') in ['expired', 'outdated']:
         await callback.message.edit_text(
             messages.MAIN_MENU_EXPIRED,
             parse_mode='Markdown',
             reply_markup=expired_user_keyboard()
         )
-    elif user.get('status') == 'created':
+    elif user_data.get('status') == 'created':
         await callback.message.edit_text(
-            messages.MAIN_MENU_CREATED.format(name=user.get('name')),
+            messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
             parse_mode='Markdown',
             reply_markup=created_user_keyboard()
         )
@@ -73,6 +73,6 @@ async def main_handler(message: types.Message, state: FSMContext):
 
 
 def register_main_handlers(dp : Dispatcher):
-    dp.register_message_handler(start, commands=['start'])
-    dp.register_message_handler(main_handler, commands=['main'])
-    dp.register_callback_query_handler(main, regexp=r"(main|back_main)")
+    dp.register_message_handler(start, commands=['start'], state='*')
+    dp.register_message_handler(main_handler, commands=['main'], state='*')
+    dp.register_callback_query_handler(main, regexp=r"(main|back_main)", state='*')

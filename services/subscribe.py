@@ -2,7 +2,6 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from keyboards.inline.main import start_main
 from db.connect import session_maker
-from db.models import User
 from loader import logger, config
 from misc import messages
 from datetime import datetime, timedelta

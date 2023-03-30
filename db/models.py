@@ -13,7 +13,7 @@ class User(Base):
     promocode = sql.Column(sql.String(10), nullable=True)
     discount = sql.Column(sql.Integer(), default=0)
     promocode_discount = sql.Column(sql.Boolean, default=False)
-    invite_user_id = sql.Column(sql.Integer(), nullable=True)
+    inviting_user_id = sql.Column(sql.Integer(), nullable=True)
     created_at = sql.Column(sql.DateTime)
     updated_at = sql.Column(sql.DateTime)
     expires_at = sql.Column(sql.DateTime, nullable=True)

@@ -3,29 +3,30 @@ from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.main import start_main, back_main_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
+from keyboards.inline.promocode import have_promocode_keyboard
 from services.subscribe import update_sub_trial
 from db.models import User
 from misc import status, messages
 from loader import logger
 
 
-async def trial(callback: types.CallbackQuery, state: FSMContext):
-    """ Активация пробного периода подписки """
-    user = await state.get_data()
+async def activate_trial(callback: types.CallbackQuery, state: FSMContext):
+    """ Активация пробного периода """
+    user_data = await state.get_data()
 
-    if user.get('status') != 'created':
+    if user_data.get('status') != 'created':
         await callback.message.edit_text(
             messages.BLOCK_TRIAL,
             reply_markup=start_main()
     )
     else:
         await update_sub_trial(callback, state)
-        user = await state.get_data()
+        user_data = await state.get_data()
         await callback.message.edit_text(
-            messages.SUCCESS_TRIAL.format(date=user.get('expires_at')),
+            messages.SUCCESS_TRIAL.format(date=user_data.get('expires_at')),
             reply_markup=back_main_keyboard()
         )
-        logger.info(f'Пользователь {user.get("id")} активировал пробный период сроком до {user.get("expires_at")}')
+        logger.info(f'Пользователь {user_data.get("id")} активировал пробный период сроком до {user_data.get("expires_at")}')
 
 async def my_sub(callback: types.CallbackQuery, state: FSMContext):
     """ Информация о подписке """
@@ -41,5 +42,5 @@ async def my_sub(callback: types.CallbackQuery, state: FSMContext):
 
 
 def register_sub_handlers(dp : Dispatcher):
-    dp.register_callback_query_handler(trial, text='trial')
-    dp.register_callback_query_handler(my_sub, text='my_sub')
+    dp.register_callback_query_handler(activate_trial, text='activate_trial', state='*')
+    dp.register_callback_query_handler(my_sub, text='my_sub', state='*')
