@@ -3,8 +3,10 @@ from aiogram.dispatcher import FSMContext
 from db.connect import session_maker
 from db.models import User
 from services.user import get_user
-import settings
 from datetime import datetime
+import settings
+import random
+import string
 
 
 async def check_promocode(message: types.Message, state: FSMContext, promocode: str):
@@ -24,3 +26,13 @@ async def check_promocode(message: types.Message, state: FSMContext, promocode: 
             return True
         else:
             return False
+    
+def generate_promocode(callback: types.CallbackQuery):
+    promocode = ''.join(random.choice(string.ascii_uppercase) for i in range(settings.LEN_PROMOCODE))
+    with session_maker() as session:
+        user = session.query(User).filter(User.telegram_id == callback.from_user.id).first()
+        user.promocode = promocode
+        user.updated_at = datetime.now()
+        session.add(user)
+        session.commit()
+    return promocode

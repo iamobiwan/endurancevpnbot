@@ -3,8 +3,9 @@ from aiogram.dispatcher import FSMContext
 
 from handlers.main import main
 from keyboards.inline.main import back_main_keyboard
+from keyboards.inline.subscribe import back_my_sub_keyboard
 from keyboards.inline.promocode import have_promocode_keyboard
-from services.promocode import check_promocode
+from services.promocode import check_promocode, generate_promocode
 from states import BotStates
 from misc import status, messages
 from loader import logger
@@ -45,9 +46,22 @@ async def enter_promocode(message : types.Message, state: FSMContext):
             
     await BotStates.MAIN.set()
 
+async def get_promocode(callback: types.CallbackQuery, state: FSMContext):
+    user_data = await state.get_data()
+    if not user_data.get('promocode'):
+        promocode = generate_promocode(callback)
+        await state.update_data(
+            promocode=promocode
+        )
+    await callback.message.edit_text(
+        messages.APPLY_PROMOCODE.format(code=user_data.get('promocode')),
+        parse_mode='Markdown',
+        reply_markup=back_my_sub_keyboard()
+    )
+
 
 def register_promocode_handlers(dp : Dispatcher):
     dp.register_message_handler(enter_promocode, state=BotStates.PROMOCODE)
     dp.register_callback_query_handler(question_promocode, regexp=r"(trial|get_sub)", state='*')
     dp.register_callback_query_handler(have_promocode, text='yes_promocode', state='*')
-    dp.register_callback_query_handler(main, text='no_promocode', state='*')
+    dp.register_callback_query_handler(get_promocode, text='get_promocode', state='*')

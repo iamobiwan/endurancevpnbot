@@ -13,6 +13,7 @@ buttons: tuple = (
     ('\U0001f4cb Мои заказы', 'orders'),
     ('\U0001f4d2 Инструкция', 'get_instruction'),
     ('\U000025c0 Назад', 'back_main'),
+    ('\U000025c0 Назад', 'back_my_sub'),
 )
 
 for text, callback in buttons:

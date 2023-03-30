@@ -3,6 +3,7 @@ from db.models import User
 from ..buttons import button_dict
 
 def my_sub_keyboard():
+    """ Клавиатура для меню 'Моя подписка' """
     markup = InlineKeyboardMarkup()
     button_list = [
         button_dict.get('extend_sub'),
@@ -14,4 +15,10 @@ def my_sub_keyboard():
     for button in button_list:
         markup.row(button)
     
+    return markup
+
+def back_my_sub_keyboard():
+    """ Клавиатура с клавишей назад в 'Моя подписка' """
+    markup = InlineKeyboardMarkup()
+    markup.row(button_dict.get('back_my_sub'))
     return markup
