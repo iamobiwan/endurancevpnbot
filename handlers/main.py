@@ -20,7 +20,7 @@ async def start(message : types.Message, state: FSMContext):
         name=user.name
     )
     await message.answer(
-        messages.WELCOME.format(name=user.name),
+        messages.WELCOME,
         parse_mode='Markdown',
         reply_markup=start_main()
     )
