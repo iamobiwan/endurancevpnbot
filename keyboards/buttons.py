@@ -3,9 +3,9 @@ from aiogram.types import InlineKeyboardButton
 button_dict = {}
 buttons: tuple = (
     ('\U000026a1 Главное меню', 'main'),
-    ('\U0000231B Активировать пробный период', 'trial_question'),
+    ('\U0000231B Активировать пробный период', 'activate_trial'),
     ('\U00002b50 Моя подписка', 'my_sub'),
-    ('\U00002b50 Оформить подписку', 'get_sub_question'),
+    ('\U00002b50 Оформить подписку', 'get_sub'),
     ('\U00002b50 Продлить подписку', 'extend_sub'),
     ('\U0001f91d Применить промокод', 'get_discount'),
     ('\U0001f527 Получить настройки', 'get_settings'),

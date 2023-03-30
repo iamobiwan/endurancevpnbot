@@ -18,7 +18,7 @@ def back_main_keyboard():
 def created_user_keyboard():
     """ Клавиатура нового пользователя """
     markup = InlineKeyboardMarkup()
-    button_list = [button_dict.get('trial_question'), button_dict.get('get_sub_question'), button_dict.get('get_discount')]
+    button_list = [button_dict.get('activate_trial'), button_dict.get('get_sub'), button_dict.get('get_discount')]
     
     for button in button_list:
         markup.row(button)

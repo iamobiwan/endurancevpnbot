@@ -10,6 +10,7 @@ import string
 
 
 async def check_promocode(message: types.Message, state: FSMContext, promocode: str):
+    """ Проверка промокода и начисление скидки """
     with session_maker() as session:
         inviting_user = session.query(User).filter(User.promocode == promocode).first()
         if inviting_user:
@@ -28,6 +29,7 @@ async def check_promocode(message: types.Message, state: FSMContext, promocode: 
             return False
     
 def generate_promocode(callback: types.CallbackQuery):
+    """ Генерация промокода"""
     with session_maker() as session:
         promocode = ''.join(random.choice(string.ascii_uppercase) for i in range(settings.LEN_PROMOCODE))
         user_promocodes = [item.promocode for item in session.query(User.promocode)]

@@ -3,7 +3,6 @@ from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.main import start_main, back_main_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
-from keyboards.inline.promocode import have_promocode_keyboard
 from services.subscribe import update_sub_trial
 from db.models import User
 from misc import status, messages
