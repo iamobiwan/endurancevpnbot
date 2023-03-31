@@ -13,7 +13,7 @@ from loader import logger
 
 async def select_plan(callback: types.CallbackQuery, callback_data: dict, state: FSMContext):
     order = await create_order(callback, callback_data, state)
-    
+
     if order:
         await callback.message.edit_text(
             messages.ORDER.format(
@@ -23,10 +23,12 @@ async def select_plan(callback: types.CallbackQuery, callback_data: dict, state:
                 status=status.ORDER_STATUS.get(order.status)
             ),
             parse_mode='Markdown',
-            reply_markup=donate_keyboard(order)
+            reply_markup=donate_keyboard(order, callback_data)
         )
     else:
-        await callback.message.edit_text('У вас максимальное количество заказов!')
+        await callback.message.edit_text(
+            messages.MAX_ORDERS
+        )
 
 def register_plan_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(select_plan, plan_callback.filter(), state='*')

@@ -75,4 +75,4 @@ async def main_handler(message: types.Message, state: FSMContext):
 def register_main_handlers(dp : Dispatcher):
     dp.register_message_handler(start, commands=['start'], state='*')
     dp.register_message_handler(main_handler, commands=['main'], state='*')
-    dp.register_callback_query_handler(main, regexp=r"(main|back_main)", state='*')
+    dp.register_callback_query_handler(main, regexp=r"(^main$|^back_main$)", state='*')

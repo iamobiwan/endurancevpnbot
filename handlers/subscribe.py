@@ -49,4 +49,4 @@ def register_sub_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(activate_trial, text='activate_trial', state='*')
     dp.register_callback_query_handler(my_sub, text='my_sub', state='*')
     dp.register_callback_query_handler(my_sub, text='back_my_sub', state='*')
-    dp.register_callback_query_handler(get_subscribe, regexp=r"(get_sub|extend_sub)", state='*')
+    dp.register_callback_query_handler(get_subscribe, regexp=r"(^get_sub$|^extend_sub$)", state='*')

@@ -15,13 +15,14 @@ def plans_keyboard(callback: types.CallbackQuery):
             button_text = f'{plan.days} дней за {plan.amount - user.discount}₽ (было {plan.amount}₽)'
         else:
             button_text = f'{plan.days} дней за {plan.amount}₽'
-        
+
         markup.row(
             InlineKeyboardButton(
                 text=button_text,
-                callback_data=plan_callback.new(plan_id=plan.id)
+                callback_data=plan_callback.new(location=callback.data, plan_id=plan.id)
             )
         )
+
     if callback.data == 'get_sub':
         markup.row(button_dict.get('back_main'))
     elif callback.data == 'extend_sub':
