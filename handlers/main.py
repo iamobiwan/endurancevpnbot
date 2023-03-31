@@ -39,7 +39,7 @@ async def main(callback: types.CallbackQuery, state: FSMContext):
         await callback.message.edit_text(
             messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
             parse_mode='Markdown',
-            reply_markup=created_user_keyboard()
+            reply_markup=created_user_keyboard(user_data.get('id'), callback.data)
         )
     else:
         await callback.message.edit_text(
@@ -50,19 +50,20 @@ async def main(callback: types.CallbackQuery, state: FSMContext):
 
 async def main_handler(message: types.Message, state: FSMContext):
     """ Главное меню (обработка c message handler)"""
-    user = await state.get_data()
-    if user:
-        if user.get('status') in ['expired', 'outdated']:
+    user_data = await state.get_data()
+    
+    if user_data:
+        if user_data.get('status') in ['expired', 'outdated']:
             await message.answer(
                 messages.MAIN_MENU_EXPIRED,
                 parse_mode='Markdown',
                 reply_markup=expired_user_keyboard()
             )
-        elif user.get('status') == 'created':
+        elif user_data.get('status') == 'created':
             await message.answer(
-                messages.MAIN_MENU_CREATED.format(name=user.get('name')),
+                messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
                 parse_mode='Markdown',
-                reply_markup=created_user_keyboard()
+                reply_markup=created_user_keyboard(user_data.get('id'), message.text)
             )
         else:
             await message.answer(

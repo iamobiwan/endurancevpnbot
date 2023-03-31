@@ -1,5 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram import types
 from db.models import User
+from services.orders import get_user_orders
 from ..buttons import button_dict
 
 
@@ -15,13 +17,21 @@ def back_main_keyboard():
     markup.row(button_dict.get('back_main'))
     return markup
 
-def created_user_keyboard():
+def created_user_keyboard(user_id, location):
     """ Клавиатура нового пользователя """
+    orders = get_user_orders(user_id)
     markup = InlineKeyboardMarkup()
     button_list = [button_dict.get('activate_trial'), button_dict.get('get_sub'), button_dict.get('get_discount')]
     
     for button in button_list:
         markup.row(button)
+
+    if orders:
+        if location == '/main':
+            cb = 'main_orders'
+        elif location in ['main', 'back_main']:
+            cb = 'sub_orders'
+        markup.row(InlineKeyboardMarkup(text='\U0001f4cb Мои заказы', callback_data=cb))
 
     return markup    
 

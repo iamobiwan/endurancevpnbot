@@ -6,6 +6,7 @@ from handlers.main import register_main_handlers
 from handlers.subscribe import register_sub_handlers
 from handlers.promocode import register_promocode_handlers
 from handlers.plan import register_plan_handlers
+from handlers.orders import register_orders_handlers
 from loader import dp, logger
 from datetime import datetime
 
@@ -15,6 +16,7 @@ register_main_handlers(dp)
 register_sub_handlers(dp)
 register_plan_handlers(dp)
 register_promocode_handlers(dp)
+register_orders_handlers(dp)
 
 # для асинхронного выполнения команд по времени
 # async def scheduler():

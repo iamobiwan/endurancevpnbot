@@ -31,14 +31,14 @@ async def activate_trial(callback: types.CallbackQuery, state: FSMContext):
 
 async def my_sub(callback: types.CallbackQuery, state: FSMContext):
     """ Информация о подписке """
-    user = await state.get_data()
+    user_data = await state.get_data()
     await callback.message.edit_text(
         messages.MY_SUB.format(
-            status=status.USER_STATUS.get(user.get('status')),
-            date=user.get('expires_at')
+            status=status.USER_STATUS.get(user_data.get('status')),
+            date=user_data.get('expires_at')
             ),
         parse_mode='Markdown',
-        reply_markup=my_sub_keyboard()
+        reply_markup=my_sub_keyboard(user_data.get('id'), callback.data)
     )
 
 async def get_subscribe(callback: types.CallbackQuery, state: FSMContext):

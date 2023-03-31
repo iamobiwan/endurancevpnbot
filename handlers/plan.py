@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 from keyboards.inline.main import start_main, back_main_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
 from keyboards.inline.plan import plans_keyboard
-from keyboards.inline.donate import donate_keyboard
+from keyboards.inline.orders import order_detail_keyboard
 from keyboards.callback import plan_callback
 from services.subscribe import update_sub_trial
 from services.orders import create_order
@@ -16,14 +16,14 @@ async def select_plan(callback: types.CallbackQuery, callback_data: dict, state:
 
     if order:
         await callback.message.edit_text(
-            messages.ORDER.format(
+            messages.DETAIL_ORDER.format(
                 id=order.id,
                 amount=order.amount,
                 days=order.days,
                 status=status.ORDER_STATUS.get(order.status)
             ),
             parse_mode='Markdown',
-            reply_markup=donate_keyboard(order, callback_data)
+            reply_markup=order_detail_keyboard(order, callback_data)
         )
     else:
         await callback.message.edit_text(
