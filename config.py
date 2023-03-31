@@ -9,6 +9,11 @@ class TgBot:
     admin_ids: List[int]
 
 @dataclass
+class Donate:
+    y_wallet: str
+    y_token: str
+
+@dataclass
 class DbConfig:
     host: str
     port: str
@@ -24,6 +29,7 @@ class RedisConfig:
 @dataclass
 class Config:
     tg_bot: TgBot
+    donate: Donate
     db: DbConfig
     redis: RedisConfig
 
@@ -33,6 +39,10 @@ def load_config(path: str = None):
         tg_bot=TgBot(
             token=os.getenv('BOT_TOKEN'),
             admin_ids=list(map(int, os.getenv('ADMINS').split(',')))
+        ),
+        donate=Donate(
+            y_token=os.getenv('Y_TOKEN'),
+            y_wallet=os.getenv('Y_WALLET')
         ),
         db=DbConfig(
             host=os.getenv('DB_HOST'),

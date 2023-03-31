@@ -10,5 +10,6 @@ VPN_STATUS = {
 }
 
 ORDER_STATUS = {
-    
+    'pending': 'Ожидает оплаты',
+    'success': 'Оплачен'
 }

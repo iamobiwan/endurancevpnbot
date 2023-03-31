@@ -5,6 +5,7 @@ from handlers.admin import register_admin_handlers
 from handlers.main import register_main_handlers
 from handlers.subscribe import register_sub_handlers
 from handlers.promocode import register_promocode_handlers
+from handlers.plan import register_plan_handlers
 from loader import dp, logger
 from datetime import datetime
 
@@ -12,6 +13,7 @@ from datetime import datetime
 register_admin_handlers(dp)
 register_main_handlers(dp)
 register_sub_handlers(dp)
+register_plan_handlers(dp)
 register_promocode_handlers(dp)
 
 # для асинхронного выполнения команд по времени

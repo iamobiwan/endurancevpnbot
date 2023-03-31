@@ -12,7 +12,6 @@ class User(Base):
     status = sql.Column(sql.String(10), default='created')
     promocode = sql.Column(sql.String(10), nullable=True)
     discount = sql.Column(sql.Integer(), default=0)
-    promocode_discount = sql.Column(sql.Boolean, default=False)
     inviting_user_id = sql.Column(sql.Integer(), nullable=True)
     created_at = sql.Column(sql.DateTime)
     updated_at = sql.Column(sql.DateTime)
@@ -64,17 +63,11 @@ class Order(Base):
     id = sql.Column(sql.Integer, primary_key=True)
     user_id = sql.Column(sql.Integer, sql.ForeignKey('user.id'))
     status = sql.Column(sql.String(10))
-    donate_url = sql.Column(sql.String(200), nullable=True)
-    days = sql.Column(sql.Integer)
     amount = sql.Column(sql.Integer)
-    invite_order = sql.Column(sql.Boolean, default=False)
+    label = sql.Column(sql.String(25))
+    days = sql.Column(sql.Integer)
+    donate_url = sql.Column(sql.String(200), nullable=True)
+    invite_discount = sql.Column(sql.Boolean, default=False)
     deleted = sql.Column(sql.Boolean, default=False)
     created_at = sql.Column(sql.DateTime)
     updated_at = sql.Column(sql.DateTime)
-
-
-def to_dict(self):
-    """ Объект БД в словарь """
-    return {column.name: getattr(self, column.name, None) for column in self.__table__.columns}
-
-Base.to_dict = to_dict
