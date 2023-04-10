@@ -38,9 +38,10 @@ async def create_order(callback: types.CallbackQuery, callback_data: dict, state
     with session_maker() as session:
         user_data = await state.get_data()
         user = session.query(User).filter(User.telegram_id == callback.from_user.id).first()
-        orders = session.query(Order).filter(
+        orders = session.query(Order).filter(and_(
             Order.user_id == user_data.get('id'),
-            ).all()
+            Order.deleted == False
+        )).all()
         
         if len(orders) >= settings.MAX_ORDERS_CNT:
             return False

@@ -3,7 +3,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from db.models import User, Plan
 from keyboards.buttons import button_dict
-from services.donate import get_user_and_plans
+from services.plans import get_user_and_plans
 from keyboards.callback import plan_callback, order_callback
 
 def plans_keyboard(callback: types.CallbackQuery):
