@@ -30,6 +30,7 @@ def delete_order(order_id):
             Order.id == order_id
             ).first()
         order.deleted = True
+        order.status = 'deleted'
         order.updated_at = datetime.now()
         session.add(order)
         session.commit()
@@ -80,3 +81,5 @@ async def create_order(callback: types.CallbackQuery, callback_data: dict, state
             logger.info(f'Создан счет id={order.id} для пользователя {user.name} id={user.id}')
             return order
     
+def check_order(order):
+    return True
