@@ -6,7 +6,7 @@ from keyboards.inline.subscribe import my_sub_keyboard, back_my_sub_keyboard
 from keyboards.inline.orders import orders_keyboard, order_detail_keyboard
 from keyboards.callback import order_callback
 from services.subscribe import update_sub_trial
-from services.orders import get_user_orders, get_order
+from services.orders import get_user_orders, get_order, delete_order
 from db.models import User, Order
 from misc import status, messages
 from loader import logger
@@ -29,7 +29,7 @@ async def show_orders(callback: types.CallbackQuery, state: FSMContext):
             reply_markup=back_my_sub_keyboard()
             )
         
-async def show_order(callback: types.CallbackQuery, callback_data: dict):
+async def show_order(callback: types.CallbackQuery, callback_data: dict, state: FSMContext):
     order: Order = get_order(callback_data.get('order_id'))
     await callback.message.edit_text(
         messages.DETAIL_ORDER.format(
@@ -42,12 +42,13 @@ async def show_order(callback: types.CallbackQuery, callback_data: dict):
         reply_markup=order_detail_keyboard(order, callback)
         )
 
-# async def remove_order(callback: types.CallbackQuery, callback_data: dict):
-#     delete_order(callback_data.get('order_id'))
-#     await callback.answer('Заказ удален')
-#     await show_orders(callback)
+async def remove_order(callback: types.CallbackQuery, callback_data: dict, state: FSMContext):
+    delete_order(callback_data.get('order_id'))
+    await callback.answer('Заказ удален')
+    await show_orders(callback, state)
 
 
 def register_orders_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(show_orders, text='orders', state='*')
     dp.register_callback_query_handler(show_order, order_callback.filter(action='get'), state='*')
+    dp.register_callback_query_handler(remove_order, order_callback.filter(action='delete'), state='*')

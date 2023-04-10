@@ -63,7 +63,7 @@ async def main_handler(message: types.Message, state: FSMContext):
             await message.answer(
                 messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
                 parse_mode='Markdown',
-                reply_markup=created_user_keyboard(user_data.get('id'), message.text)
+                reply_markup=created_user_keyboard(user_data.get('id'))
             )
         else:
             await message.answer(

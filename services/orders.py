@@ -1,5 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from sqlalchemy import and_
 from db.connect import session_maker
 from db.models import User, Order, Plan
 import settings
@@ -9,8 +10,10 @@ from loader import logger, config
 
 def get_user_orders(user_id):
     with session_maker() as session:
-        orders = session.query(Order).filter(
+        orders = session.query(Order).filter(and_(
             Order.user_id == user_id,
+            Order.deleted == False
+        )
             ).all()
         return orders
 
@@ -20,6 +23,16 @@ def get_order(order_id):
             Order.id == order_id
             ).first()
         return order
+
+def delete_order(order_id):
+    with session_maker() as session:
+        order = session.query(Order).where(
+            Order.id == order_id
+            ).first()
+        order.deleted = True
+        order.updated_at = datetime.now()
+        session.add(order)
+        session.commit()
 
 async def create_order(callback: types.CallbackQuery, callback_data: dict, state: FSMContext):
     with session_maker() as session:
