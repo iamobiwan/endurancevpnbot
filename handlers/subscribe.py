@@ -1,7 +1,8 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
-from keyboards.inline.main import start_main, back_main_keyboard
+from handlers.main import main
+from keyboards.inline.main import start_main, back_main_keyboard, main_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
 from keyboards.inline.plan import plans_keyboard
 from keyboards.callback import plan_callback
@@ -32,14 +33,20 @@ async def activate_trial(callback: types.CallbackQuery, state: FSMContext):
 async def my_sub(callback: types.CallbackQuery, state: FSMContext):
     """ Информация о подписке """
     user_data = await state.get_data()
-    await callback.message.edit_text(
-        messages.MY_SUB.format(
-            status=status.USER_STATUS.get(user_data.get('status')),
-            date=user_data.get('expires_at')
-            ),
-        parse_mode='Markdown',
-        reply_markup=my_sub_keyboard(user_data.get('id'), callback.data)
-    )
+    user_status = user_data.get('status')
+
+    if user_status == 'created':
+        await main(callback, state)
+    else:
+        await callback.message.edit_text(
+            messages.MY_SUB.format(
+                status=status.USER_STATUS.get(user_status),
+                date=user_data.get('expires_at')
+                ),
+            parse_mode='Markdown',
+            reply_markup=my_sub_keyboard()
+        )
+
 
 async def get_subscribe(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text('Выберите длительность подписки:', reply_markup=plans_keyboard(callback))

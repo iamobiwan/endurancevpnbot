@@ -6,8 +6,7 @@ from keyboards.callback import order_callback
 from services.orders import get_user_orders
 
 
-def orders_keyboard(user_id, callback: types.CallbackQuery):
-    orders = get_user_orders(user_id)
+def orders_keyboard(orders):
     markup = InlineKeyboardMarkup()
     if orders:
         for order in orders:
@@ -22,7 +21,7 @@ def orders_keyboard(user_id, callback: types.CallbackQuery):
     markup.row(
         InlineKeyboardButton(
             text='\U000025c0 Назад',
-            callback_data='back_main'
+            callback_data='back_my_sub'
         )
     )
     return markup
@@ -35,10 +34,6 @@ def order_detail_keyboard(order: Order, callback_data: dict):
     
     markup.row(InlineKeyboardButton(text='\U0001f5d1 Удалить', callback_data=order_callback.new(action='delete', order_id=order.id)))
 
-    if callback_data.get('location') == 'get_sub':
-        back_callback = 'back_main'
-    elif callback_data.get('location') == 'extend_sub':
-        back_callback = 'back_my_sub'
 
-    markup.row(InlineKeyboardButton(text='\U000025c0 Назад', callback_data=back_callback))
+    markup.row(InlineKeyboardButton(text='\U000025c0 Назад', callback_data='orders'))
     return markup

@@ -2,6 +2,7 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.main import start_main, back_main_keyboard
+from keyboards.inline.subscribe import back_my_sub_keyboard
 from keyboards.inline.subscribe import my_sub_keyboard
 from keyboards.inline.plan import plans_keyboard
 from keyboards.inline.orders import order_detail_keyboard
@@ -27,7 +28,8 @@ async def select_plan(callback: types.CallbackQuery, callback_data: dict, state:
         )
     else:
         await callback.message.edit_text(
-            messages.MAX_ORDERS
+            messages.MAX_ORDERS,
+            reply_markup=back_my_sub_keyboard()
         )
 
 def register_plan_handlers(dp : Dispatcher):

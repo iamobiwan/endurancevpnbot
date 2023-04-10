@@ -14,6 +14,13 @@ def get_user_orders(user_id):
             ).all()
         return orders
 
+def get_order(order_id):
+    with session_maker() as session:
+        order = session.query(Order).where(
+            Order.id == order_id
+            ).first()
+        return order
+
 async def create_order(callback: types.CallbackQuery, callback_data: dict, state: FSMContext):
     with session_maker() as session:
         user_data = await state.get_data()
@@ -58,3 +65,4 @@ async def create_order(callback: types.CallbackQuery, callback_data: dict, state
             session.commit()
             logger.info(f'Создан счет id={order.id} для пользователя {user.name} id={user.id}')
             return order
+    

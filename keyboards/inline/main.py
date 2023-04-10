@@ -17,7 +17,7 @@ def back_main_keyboard():
     markup.row(button_dict.get('back_main'))
     return markup
 
-def created_user_keyboard(user_id, location):
+def created_user_keyboard(user_id):
     """ Клавиатура нового пользователя """
     orders = get_user_orders(user_id)
     markup = InlineKeyboardMarkup()
@@ -27,11 +27,7 @@ def created_user_keyboard(user_id, location):
         markup.row(button)
 
     if orders:
-        if location == '/main':
-            cb = 'main_orders'
-        elif location in ['main', 'back_main']:
-            cb = 'sub_orders'
-        markup.row(InlineKeyboardMarkup(text='\U0001f4cb Мои заказы', callback_data=cb))
+        markup.row(InlineKeyboardMarkup(text='\U0001f4cb Мои заказы', callback_data='orders'))
 
     return markup    
 

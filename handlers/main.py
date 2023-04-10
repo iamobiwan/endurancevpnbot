@@ -39,7 +39,7 @@ async def main(callback: types.CallbackQuery, state: FSMContext):
         await callback.message.edit_text(
             messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
             parse_mode='Markdown',
-            reply_markup=created_user_keyboard(user_data.get('id'), callback.data)
+            reply_markup=created_user_keyboard(user_data.get('id'))
         )
     else:
         await callback.message.edit_text(
