@@ -8,6 +8,7 @@ class User(Base):
 
     id = sql.Column(sql.Integer, primary_key=True)
     telegram_id = sql.Column(sql.BigInteger, nullable=False)
+    chat_id = sql.Column(sql.BigInteger, nullable=False)
     name = sql.Column(sql.String(50))
     status = sql.Column(sql.String(10), default='created')
     promocode = sql.Column(sql.String(10), nullable=True)

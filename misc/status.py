@@ -3,6 +3,7 @@ USER_STATUS = {
     'trial':'Пробный период',
     'subscribed':'Оформлена',
     'expired':'Закончилась',
+    'outdated':'Не оформлена'
 }
 
 VPN_STATUS = {

@@ -9,6 +9,7 @@ def create_user(message: types.Message):
     """ Создаем пользователя в БД """
     user = User(
         telegram_id=message.from_user.id,
+        chat_id=message.chat.id,
         name=message.from_user.full_name,
         created_at=datetime.now(),
         updated_at=datetime.now(),

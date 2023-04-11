@@ -1,12 +1,14 @@
+from aiogram.dispatcher import FSMContext
 from db.models import Server, User
 from datetime import datetime, timedelta
-from loader import bot, logger, config
+from loader import bot, logger, config, dp
 from db.connect import session_maker
 from db.models import Order
 from keyboards.inline.main import back_main_keyboard
 from services.orders import check_order
 from misc import messages, status
 import settings
+
 
 async def check_pending_orders():
     logger.info('Проверка ожидающих счетов...')
@@ -15,6 +17,7 @@ async def check_pending_orders():
             Order.status == 'pending',
             ).all()
         for order in orders:
+            user_state: FSMContext = dp.current_state(user=order.user.telegram_id, chat=order.user.chat_id)
             if check_order(order):
                 order.status = 'success'
                 if order.user.status in ['expired','created', 'outdated']:
@@ -24,6 +27,10 @@ async def check_pending_orders():
                 order.user.status = 'subscribed'
                 order.user.updated_at = datetime.now()
                 order.updated_at = datetime.now()
+                await user_state.update_data(
+                    status='subscribed',
+                    expires_at=order.user.expires_at.strftime("%d.%m.%Y")
+                )
 
                 try:
                     await bot.send_message(
@@ -31,7 +38,7 @@ async def check_pending_orders():
                         text=messages.SUCCESS_ORDER.format(
                             id=order.id,
                             amount=order.amount,
-                            status=status.ORDER_STATUS.get(order.user.status),
+                            status=status.USER_STATUS.get(order.user.status),
                             expires_at=order.user.expires_at.strftime("%d.%m.%Y")
                         ),
                         parse_mode='Markdown',
@@ -41,7 +48,7 @@ async def check_pending_orders():
                     logger.warning(f'Сообщение об успешной оплате не отправлено пользователю {order.user.id}')
 
             else:
-                diff:timedelta = datetime.now() - order.created_at
+                diff: timedelta = datetime.now() - order.created_at
                 if diff.days > settings.PENDING_ORDER_TTL:
                     order.deleted = True
                     order.status = 'expired'
