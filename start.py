@@ -7,6 +7,7 @@ from handlers.subscribe import register_sub_handlers
 from handlers.promocode import register_promocode_handlers
 from handlers.plan import register_plan_handlers
 from handlers.orders import register_orders_handlers
+from handlers.vpn import register_vpn_handlers
 from services.actions import check_pending_orders
 from loader import dp, logger
 from datetime import datetime
@@ -18,6 +19,7 @@ register_sub_handlers(dp)
 register_plan_handlers(dp)
 register_promocode_handlers(dp)
 register_orders_handlers(dp)
+register_vpn_handlers(dp)
 
 # для асинхронного выполнения команд по времени
 async def scheduler():

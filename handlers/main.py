@@ -2,6 +2,7 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from keyboards.inline.main import created_user_keyboard, start_main, main_keyboard, expired_user_keyboard
 from services.user import get_user, create_user
+from services.vpn import create_vpn
 from db.models import User
 from misc import status, messages
 from states import BotStates
@@ -13,10 +14,12 @@ async def start(message : types.Message, state: FSMContext):
 
     if not user:
         user: User = create_user(message)
+        create_vpn(user)
         await state.update_data(
             id=user.id,
             telegram_id=user.telegram_id,
             status=user.status,
+            vpn_status='created',
             name=user.name
         )
     await message.answer(

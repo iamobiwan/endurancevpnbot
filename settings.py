@@ -14,3 +14,5 @@ DONATE_URL = "https://yoomoney.ru/quickpay/confirm.xml?receiver={wallet}\
 &quickpay-form=shop&sum={amount}&label={label}"
 
 PENDING_ORDER_TTL = 2
+
+MAX_SERVER_USER_COUNT = 30

@@ -29,7 +29,6 @@ class Server(Base):
     lan_net = sql.Column(sql.String(18))
     lan_ip = sql.Column(sql.String(18))
     wan_ip = sql.Column(sql.String(15))
-    users_cnt = sql.Column(sql.Integer(), default=0)
 
     vpn = relationship('Vpn', backref='server')
 
@@ -42,6 +41,7 @@ class Vpn(Base):
 
     id = sql.Column(sql.Integer, primary_key=True)
     user_id = sql.Column(sql.Integer, sql.ForeignKey('user.id', ondelete='cascade'), nullable=False)
+    status=sql.Column(sql.String(10), default='created')
     server_id = sql.Column(sql.Integer, sql.ForeignKey('server.id', ondelete='cascade'))
     ip = sql.Column(sql.String(18))
     public_key = sql.Column(sql.String(50))
