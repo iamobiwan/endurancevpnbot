@@ -8,7 +8,7 @@ from handlers.promocode import register_promocode_handlers
 from handlers.plan import register_plan_handlers
 from handlers.orders import register_orders_handlers
 from handlers.vpn import register_vpn_handlers
-from services.actions import check_pending_orders, check_pending_vpn, rebuild_server_config
+from services.actions import check_pending_orders, check_pending_vpn, rebuild_server_config, check_sub_expire
 from loader import dp, logger
 from datetime import datetime
 
@@ -23,9 +23,10 @@ register_vpn_handlers(dp)
 
 # для асинхронного выполнения команд по времени
 async def scheduler():
-    # aioschedule.every(30).seconds.do(check_pending_orders)
-    aioschedule.every(15).seconds.do(check_pending_vpn)
-    aioschedule.every(20).seconds.do(rebuild_server_config)
+    aioschedule.every(30).seconds.do(check_pending_orders)
+    aioschedule.every(60).seconds.do(check_pending_vpn)
+    aioschedule.every(90).seconds.do(check_sub_expire)
+    aioschedule.every(120).seconds.do(rebuild_server_config)
     # aioschedule.every().day.at('00:02').do(rebuild_server_config)
     while True:
         await aioschedule.run_pending()

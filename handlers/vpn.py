@@ -42,13 +42,13 @@ async def get_settings_handler(message: types.Message, state: FSMContext):
     if user_data.get('status') in ['trial', 'subscribed']:
         if vpn_status == 'created':
             await change_vpn_status_to_requested(state, user_data.get('id'))
-            await message.edit_text(
+            await message.answer(
             messages.REQUEST_FOR_VPN,
             parse_mode='Markdown',
             reply_markup=back_main_keyboard()
             )
         elif vpn_status == 'pending':
-            await message.edit_text(
+            await message.answer(
             messages.WAIT_FOR_SETTINGS,
             parse_mode='Markdown',
             reply_markup=back_main_keyboard()
@@ -56,7 +56,7 @@ async def get_settings_handler(message: types.Message, state: FSMContext):
         elif vpn_status == 'executed':
             await send_vpn_settings(user_data)
     else:
-        await message.edit_text(
+        await message.answer(
             messages.GET_VPN_UNSUB,
             parse_mode='Markdown',
             reply_markup=back_main_keyboard()
@@ -64,7 +64,7 @@ async def get_settings_handler(message: types.Message, state: FSMContext):
 
 def register_vpn_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(get_settings, text='get_settings', state='*')
-    dp.register_message_handler(get_settings_handler, commands=['get_settings'], state='*')
+    dp.register_message_handler(get_settings_handler, commands=['getsettings'], state='*')
 
 
 # async def get_settings(message : types.Message, user, **kwargs):
