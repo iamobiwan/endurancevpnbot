@@ -17,7 +17,7 @@ class User(Base):
     created_at = sql.Column(sql.DateTime)
     updated_at = sql.Column(sql.DateTime)
     expires_at = sql.Column(sql.DateTime, nullable=True)
-    vpn = relationship('Vpn', backref='user')
+    vpn = relationship('Vpn', uselist=False, back_populates='user')
     order = relationship('Order', backref='user')
 
 
@@ -47,6 +47,7 @@ class Vpn(Base):
     public_key = sql.Column(sql.String(50))
     created_at = sql.Column(sql.DateTime)
     updated_at = sql.Column(sql.DateTime)
+    user = relationship('User', back_populates='vpn')
 
 
 class Plan(Base):

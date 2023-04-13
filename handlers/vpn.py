@@ -21,7 +21,7 @@ async def get_settings(callback: types.CallbackQuery, state: FSMContext):
             parse_mode='Markdown',
             reply_markup=back_main_keyboard()
             )
-        elif vpn_status == 'requested':
+        elif vpn_status == 'pending':
             await callback.message.edit_text(
             messages.WAIT_FOR_SETTINGS,
             parse_mode='Markdown',
@@ -36,27 +36,36 @@ async def get_settings(callback: types.CallbackQuery, state: FSMContext):
             reply_markup=back_main_keyboard()
         )
 
+async def get_settings_handler(message: types.Message, state: FSMContext):
+    user_data = await state.get_data()
+    vpn_status = user_data.get('vpn_status')
+    if user_data.get('status') in ['trial', 'subscribed']:
+        if vpn_status == 'created':
+            await change_vpn_status_to_requested(state, user_data.get('id'))
+            await message.edit_text(
+            messages.REQUEST_FOR_VPN,
+            parse_mode='Markdown',
+            reply_markup=back_main_keyboard()
+            )
+        elif vpn_status == 'pending':
+            await message.edit_text(
+            messages.WAIT_FOR_SETTINGS,
+            parse_mode='Markdown',
+            reply_markup=back_main_keyboard()
+        )
+        elif vpn_status == 'executed':
+            await send_vpn_settings(user_data)
+    else:
+        await message.edit_text(
+            messages.GET_VPN_UNSUB,
+            parse_mode='Markdown',
+            reply_markup=back_main_keyboard()
+        )
+
 def register_vpn_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(get_settings, text='get_settings', state='*')
-#         await callback.message.edit_text(
-#             f'Мы получили Ваш запрос на формирование настроек.\n\n'\
-#             f'В течение 5 минут бот обработает Ваш запрос и пришлет настройки\n\n'
-#             f'Ожидайте...',
-#             parse_mode='Markdown',
-#             reply_markup=back_main()
-#             )
-#         generate_user_config(user)
-#     elif user.vpn_status == 'pending':
-#         await callback.message.edit_text(
-#             f'Ваши настройки формируются.\n\n'\
-#             f'В течение 5 минут бот обработает Ваш запрос и пришлет настройки\n\n'
-#             f'Ожидайте...',
-#             parse_mode='Markdown',
-#             reply_markup=back_main()
-#             )
-#     else:
-#         await send_settings(user)
-#         await callback.answer('Настройки отправлены')
+    dp.register_message_handler(get_settings_handler, commands=['get_settings'], state='*')
+
 
 # async def get_settings(message : types.Message, user, **kwargs):
 #     if user:

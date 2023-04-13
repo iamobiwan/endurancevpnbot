@@ -18,6 +18,7 @@ async def start(message : types.Message, state: FSMContext):
         await state.update_data(
             id=user.id,
             telegram_id=user.telegram_id,
+            chat_id=user.chat_id,
             status=user.status,
             vpn_status='created',
             name=user.name

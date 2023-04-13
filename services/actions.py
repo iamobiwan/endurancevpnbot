@@ -3,9 +3,10 @@ from db.models import Server, User
 from datetime import datetime, timedelta
 from loader import bot, logger, config, dp
 from db.connect import session_maker
-from db.models import Order
+from db.models import Order, Vpn
 from keyboards.inline.main import back_main_keyboard
 from services.orders import check_order
+from services.vpn import generate_vpn_settings, send_vpn_settings, update_server_config
 from misc import messages, status
 import settings
 
@@ -88,3 +89,34 @@ async def check_pending_orders():
                         )
             session.add(order)
             session.commit()
+
+async def check_pending_vpn():
+    logger.info('Проверка ожидающих VPN...')
+    with session_maker() as session:
+        vpns = session.query(Vpn).filter(Vpn.status == 'pending').all()
+        if vpns:
+            for vpn in vpns:
+                user_state: FSMContext = dp.current_state(user=vpn.user.telegram_id, chat=vpn.user.chat_id)
+                user_data = await user_state.get_data()
+                try:
+                    await generate_vpn_settings(user_state)
+                    await send_vpn_settings(user_data)
+                except:
+                    await bot.send_message(
+                        chat_id=vpn.user.chat_id,
+                        text=messages.GET_SETTING_ERROR,
+                        parse_mode='Markdown',
+                        reply_markup=back_main_keyboard()
+                    )
+                    logger.warning(f'Что-то пошло не так при генерации конфигурации пользователя id={vpn.user_id}')
+        else:
+            logger.info('Нет ожидающих VPN')
+
+async def rebuild_server_config():
+    logger.info('Запускаем обновление конфигурации на серверах...')
+    with session_maker() as session:
+        servers = session.query(Server).all()
+        for server in servers:
+            await update_server_config(server)
+            # await sync_config(server)
+            # await check_config(server)
