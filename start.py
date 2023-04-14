@@ -25,11 +25,13 @@ register_instruction_handlers(dp)
 
 # для асинхронного выполнения команд по времени
 async def scheduler():
-    aioschedule.every(30).seconds.do(check_pending_orders)
-    aioschedule.every(60).seconds.do(check_pending_vpn)
-    aioschedule.every(90).seconds.do(check_sub_expire)
-    aioschedule.every(120).seconds.do(rebuild_server_config)
-    # aioschedule.every().day.at('00:02').do(rebuild_server_config)
+    # aioschedule.every(30).seconds.do(check_pending_orders)
+    # aioschedule.every(60).seconds.do(check_pending_vpn)
+    # aioschedule.every(90).seconds.do(check_sub_expire)
+    # aioschedule.every(120).seconds.do(rebuild_server_config)
+    aioschedule.every(5).minutes.do(check_pending_vpn)
+    aioschedule.every(7).minutes.do(check_pending_orders)
+    aioschedule.every().day.at('01:00').do(check_sub_expire)
     while True:
         await aioschedule.run_pending()
         await asyncio.sleep(1)

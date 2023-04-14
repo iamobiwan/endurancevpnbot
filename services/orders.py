@@ -6,6 +6,7 @@ from db.models import User, Order, Plan
 import settings
 from datetime import datetime
 from loader import logger, config
+import requests
 
 
 def get_user_orders(user_id):
@@ -83,4 +84,26 @@ async def create_order(callback: types.CallbackQuery, callback_data: dict, state
             return order
     
 def check_order(order):
-    return True
+    url = f'https://yoomoney.ru/api/operation-history'
+    headers = {
+        'Authorization': f'Bearer {config.donate.y_token}',
+        'Content-Type': 'application/x-www-form-urlencoded',
+    }
+    params = {
+        'label': order.label,
+        # 'type': 'deposition',
+        # 'records': 3,
+        # 'details': 'true'
+        # 'operation_id': '714571374770005004'
+    }
+    response = requests.post(url, headers=headers, data=params)
+    try:
+        operations = response.json().get('operations')
+    except:
+        operations = None
+    if operations:
+        if operations[0].get('status') == 'success':
+            logger.info(f'Счет {order.id} оплачен.')
+            return True
+    else:
+        return False
