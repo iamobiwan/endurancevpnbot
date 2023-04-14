@@ -11,7 +11,7 @@ buttons: tuple = (
     ('\U0001f527 Получить настройки', 'get_settings'),
     ('\U0001f91d Мой промокод', 'get_promocode'),
     ('\U0001f4cb Мои заказы', 'orders'),
-    ('\U0001f4d2 Инструкция', 'get_instruction'),
+    ('\U0001f4d2 Инструкция', 'instruction'),
     ('\U000025c0 Назад', 'back_main'),
     ('\U000025c0 Назад', 'back_my_sub'),
 )

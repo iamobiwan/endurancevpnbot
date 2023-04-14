@@ -49,7 +49,12 @@ async def my_sub(callback: types.CallbackQuery, state: FSMContext):
 
 
 async def get_subscribe(callback: types.CallbackQuery, state: FSMContext):
-    await callback.message.edit_text('Выберите длительность подписки:', reply_markup=plans_keyboard(callback))
+    await callback.message.edit_text(
+        messages.SUB_PLANS,
+        disable_web_page_preview=True,
+        parse_mode='Markdown',
+        reply_markup=plans_keyboard(callback)
+        )
 
 
 def register_sub_handlers(dp : Dispatcher):

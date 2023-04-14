@@ -40,7 +40,11 @@ def expired_user_keyboard():
 def main_keyboard():
     """ Клавиатура главного меню """
     markup = InlineKeyboardMarkup()
-    button_list = [button_dict.get('get_settings'), button_dict.get('get_instruction'), button_dict.get('my_sub')]
+    button_list = [
+        button_dict.get('get_settings'),
+        button_dict.get('instruction'),
+        button_dict.get('my_sub')
+        ]
 
     for button in button_list:
         markup.row(button)
