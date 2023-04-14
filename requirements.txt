@@ -14,9 +14,12 @@ idna==3.4
 loguru==0.6.0
 magic-filter==1.0.9
 multidict==6.0.4
+psycopg2==2.9.5
 python-dotenv==1.0.0
 pytz==2023.2
+redis==4.5.3
 SQLAlchemy==2.0.7
 typing_extensions==4.5.0
 win32-setctime==1.1.0
+subnet-utils==0.5.1
 yarl==1.8.2
