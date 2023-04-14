@@ -10,7 +10,7 @@ async def sync_config(server):
     client.set_missing_host_key_policy(AutoAddPolicy())
     client.load_system_host_keys()
     try:
-        client.connect(server.wan_ip, username='obiwan')
+        client.connect(server.wan_ip, username='root')
         sftp = client.open_sftp()
         sftp.put(f'servers/{server.name}/wg0.conf', '/etc/wireguard/wg0.conf')
         logger.info('Файл скопирован')
