@@ -39,7 +39,6 @@ async def send_vpn_settings(user_data):
             user_data.get('chat_id'),
             config,
             caption=messages.GET_SETTINGS_SUCCESS,
-            reply_markup=back_main_keyboard()
         )
     # await bot.send_message(
     #     chat_id=user_data.get('chat_id'),
