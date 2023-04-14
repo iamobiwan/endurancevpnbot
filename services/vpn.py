@@ -37,14 +37,15 @@ async def send_vpn_settings(user_data):
     with open(f'users/config/endurancevpn_{user_data.get("id")}.conf', 'rb') as config:
         await bot.send_document(
             user_data.get('chat_id'),
-            config
+            config,
+            caption=messages.GET_SETTINGS_SUCCESS
         )
-    await bot.send_message(
-        chat_id=user_data.get('chat_id'),
-        text=messages.GET_SETTINGS_SUCCESS,
-        parse_mode='Markdown',
-        reply_markup=back_main_keyboard()
-    )
+    # await bot.send_message(
+    #     chat_id=user_data.get('chat_id'),
+    #     text=
+    #     parse_mode='Markdown',
+    #     reply_markup=back_main_keyboard()
+    # )
 
 async def generate_vpn_settings(user_state):
     with session_maker() as session:
