@@ -41,7 +41,7 @@ def main_keyboard():
     """ Клавиатура главного меню """
     markup = InlineKeyboardMarkup()
     button_list = [
-        button_dict.get('get_settings'),
+        button_dict.get('get_vpn'),
         button_dict.get('instruction'),
         button_dict.get('my_sub')
         ]

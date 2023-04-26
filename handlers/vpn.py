@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 
-async def get_settings(callback: types.CallbackQuery, state: FSMContext):
+async def get_vpn(callback: types.CallbackQuery, state: FSMContext):
     user_data = await state.get_data()
     vpn_status = user_data.get('vpn_status')
     if user_data.get('status') in ['trial', 'subscribed']:
@@ -36,7 +36,7 @@ async def get_settings(callback: types.CallbackQuery, state: FSMContext):
             reply_markup=back_main_keyboard()
         )
 
-async def get_settings_handler(message: types.Message, state: FSMContext):
+async def get_vpn_handler(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     vpn_status = user_data.get('vpn_status')
     if user_data.get('status') in ['trial', 'subscribed']:
@@ -63,11 +63,11 @@ async def get_settings_handler(message: types.Message, state: FSMContext):
         )
 
 def register_vpn_handlers(dp : Dispatcher):
-    dp.register_callback_query_handler(get_settings, text='get_settings', state='*')
-    dp.register_message_handler(get_settings_handler, commands=['getsettings'], state='*')
+    dp.register_callback_query_handler(get_vpn, text='get_vpn', state='*')
+    dp.register_message_handler(get_vpn_handler, commands=['getvpn'], state='*')
 
 
-# async def get_settings(message : types.Message, user, **kwargs):
+# async def get_vpn(message : types.Message, user, **kwargs):
 #     if user:
 #         if user.vpn_status == 'not requested':
 #             await message.answer(

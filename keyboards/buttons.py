@@ -8,7 +8,7 @@ buttons: tuple = (
     ('\U00002b50 Оформить подписку', 'get_sub'),
     ('\U00002b50 Продлить подписку', 'extend_sub'),
     ('\U0001f91d Применить промокод', 'get_discount'),
-    ('\U0001f527 Получить настройки', 'get_settings'),
+    ('\U0001f310 Получить VPN', 'get_vpn'),
     ('\U0001f91d Мой промокод', 'get_promocode'),
     ('\U0001f4cb Мои заказы', 'orders'),
     ('\U0001f4d2 Инструкция', 'instruction'),
