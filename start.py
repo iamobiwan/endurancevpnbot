@@ -9,6 +9,7 @@ from handlers.plan import register_plan_handlers
 from handlers.orders import register_orders_handlers
 from handlers.vpn import register_vpn_handlers
 from handlers.instruction import register_instruction_handlers
+from handlers.support import register_support_handlers
 from services.actions import check_pending_orders, check_pending_vpn, rebuild_server_config, check_sub_expire
 from loader import dp, logger
 from datetime import datetime
@@ -22,6 +23,7 @@ register_promocode_handlers(dp)
 register_orders_handlers(dp)
 register_vpn_handlers(dp)
 register_instruction_handlers(dp)
+register_support_handlers(dp)
 
 # для асинхронного выполнения команд по времени
 async def scheduler():

@@ -11,5 +11,5 @@ async def support(message: types.Message, state: FSMContext):
         parse_mode='Markdown',
         reply_markup=back_main_keyboard())
 
-def register_main_handlers(dp : Dispatcher):
+def register_support_handlers(dp : Dispatcher):
     dp.register_message_handler(support, commands=['support'], state='*')
