@@ -13,6 +13,7 @@ from datetime import datetime
 async def get_vpn(callback: types.CallbackQuery, state: FSMContext):
     user_data = await state.get_data()
     vpn_status = user_data.get('vpn_status')
+    await callback.answer()
     if user_data.get('status') in ['trial', 'subscribed']:
         if vpn_status == 'created':
             await change_vpn_status_to_requested(state, user_data.get('id'))
