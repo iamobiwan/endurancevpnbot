@@ -92,7 +92,6 @@ async def check_pending_orders():
                             )
                 session.add(order)
                 session.commit()
-            await rebuild_server_config()
 
 async def check_pending_vpn():
     logger.info('Проверка ожидающих VPN...')
