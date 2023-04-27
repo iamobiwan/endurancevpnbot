@@ -19,10 +19,12 @@ async def check_pending_orders():
         orders = session.query(Order).filter(
             Order.status == 'pending',
             ).all()
+        rebuild = False
         if orders:
             for order in orders: # перебор всех заказов
                 user_state: FSMContext = dp.current_state(user=order.user.telegram_id, chat=order.user.chat_id) # достаем user_state
                 if check_order(order): # проверка оплаты заказа через API y_money
+                    rebuild = True
                     logger.info(f'Счет {order.id} успешно оплачен!')
                     user_data = await user_state.get_data()
                     if order.invite_discount: # был ли заказ по чьему-то промокоду?
@@ -92,6 +94,8 @@ async def check_pending_orders():
                             )
                 session.add(order)
                 session.commit()
+            if rebuild:
+                await rebuild_server_config()
 
 async def check_pending_vpn():
     logger.info('Проверка ожидающих VPN...')
