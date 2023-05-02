@@ -200,5 +200,8 @@ ADMIN_ENTER_ORDER_ID = """Введите ID заказа..."""
 
 ADMIN_CHECK_ORDER = """Заказ *№{id}* от *{date}*:
 
-Статус: {status}
+Статус: *{status}*
 """
+
+ADMIN_ORDER_NOT_EXIST = """Такого заказа не существует!"""
+ADMIN_INT_ERROR = """ID должен быть в цифрах!"""

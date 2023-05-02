@@ -12,6 +12,6 @@ def admin_start_keyboard():
 
 def back_admin_start_keyboard():
     markup = InlineKeyboardMarkup()
-    back_admin_menu_button = InlineKeyboardButton(text='Назад', callback_data='back_admin_menu')
+    back_admin_menu_button = InlineKeyboardButton(text='\U000025c0 Назад', callback_data='back_admin_menu')
     markup.row(back_admin_menu_button)
     return markup
