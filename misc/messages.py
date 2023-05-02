@@ -194,10 +194,11 @@ SUPPORT = """В случае возникновения каких-либо во
 аккаунт @endurancevpnsupport
 """
 
-ADMIN_HELLO = """Привет, Админ! Что будем делать?"""
+ADMIN_HELLO = """Привет, Админ! Выбери команду из списка:"""
 
 ADMIN_ENTER_ORDER_ID = """Введите ID заказа..."""
 
-ADMIN_CHECK_ORDER = """Заказ: {id} от {date}:
+ADMIN_CHECK_ORDER = """Заказ *№{id}* от *{date}*:
+
 Статус: {status}
 """

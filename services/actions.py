@@ -14,7 +14,6 @@ import settings
 
 
 async def check_pending_orders():
-    logger.info('Проверка ожидающих счетов...')
     with session_maker() as session:
         orders = session.query(Order).filter(
             Order.status == 'pending',
@@ -83,13 +82,16 @@ async def check_pending_orders():
                         order.deleted = True
                         order.status = 'expired'
                         order.updated_at = datetime.now()
-                        await bot.send_message(
-                            chat_id=order.user.telegram_id,
-                            text=messages.DELETE_ORDER.format(
-                                id=order.id,
-                                amount=order.amount
+                        try:
+                            await bot.send_message(
+                                chat_id=order.user.telegram_id,
+                                text=messages.DELETE_ORDER.format(
+                                    id=order.id,
+                                    amount=order.amount
+                                    )
                                 )
-                            )
+                        except:
+                            pass
                 session.add(order)
                 session.commit()
             await rebuild_server_config()
@@ -106,17 +108,19 @@ async def check_pending_vpn():
                     await generate_vpn_settings(user_state)
                     await send_vpn_settings(user_data)
                 except:
-                    await bot.send_message(
-                        chat_id=vpn.user.chat_id,
-                        text=messages.GET_SETTING_ERROR,
-                        parse_mode='Markdown',
-                        reply_markup=back_main_keyboard()
-                    )
+                    try:
+                        await bot.send_message(
+                            chat_id=vpn.user.chat_id,
+                            text=messages.GET_SETTING_ERROR,
+                            parse_mode='Markdown',
+                            reply_markup=back_main_keyboard()
+                        )
+                    except:
+                        pass
                     logger.warning(f'Что-то пошло не так при генерации конфигурации пользователя id={vpn.user_id}')
-            logger.info(f'Есть новые пользователи, ребилд конфига...')
             await rebuild_server_config()
         else:
-            logger.info('Нет ожидающих VPN')
+            pass
 
 async def rebuild_server_config():
     logger.info('Запускаем обновление конфигурации на серверах...')
@@ -144,28 +148,37 @@ async def check_sub_expire():
                     await user_state.update_data(
                         status = 'expired'
                     )
-                    await bot.send_message(
-                        user.telegram_id,
-                        messages.EXPIRED_SUB,
-                        reply_markup=expired_user_keyboard()    
-                        )
+                    try:
+                        await bot.send_message(
+                            user.telegram_id,
+                            messages.EXPIRED_SUB,
+                            reply_markup=expired_user_keyboard()    
+                            )
+                    except:
+                        pass
                 else:
                     if diff.days in settings.SUB_DAYS_NOTIFICATION:
-                        await bot.send_message(
-                        user.telegram_id,
-                        messages.SUB_NOTIFICATE.format(expires_at=user.expires_at.strftime("%d.%m.%Y")),
-                        reply_markup=my_sub_keyboard(),    
-                        parse_mode='Markdown'    
-                        )
+                        try:
+                            await bot.send_message(
+                            user.telegram_id,
+                            messages.SUB_NOTIFICATE.format(expires_at=user.expires_at.strftime("%d.%m.%Y")),
+                            reply_markup=my_sub_keyboard(),    
+                            parse_mode='Markdown'    
+                            )
+                        except:
+                            pass
             elif user.status == 'expired':
                 diff: timedelta = date - user.expires_at
                 if diff.days == settings.EXPIRED_SUB:
-                    await bot.send_message(
-                        user.telegram_id,
-                        messages.OUTDATED_SUB_NOTIFICATION,
-                        reply_markup=expired_user_keyboard(),
-                        parse_mode='Markdown'    
-                        )
+                    try:
+                        await bot.send_message(
+                            user.telegram_id,
+                            messages.OUTDATED_SUB_NOTIFICATION,
+                            reply_markup=expired_user_keyboard(),
+                            parse_mode='Markdown'    
+                            )
+                    except:
+                        pass
                 elif diff.days > settings.OUDATED_SUB:
                     user.status = 'outdated'
                     user.updated_at = date
@@ -178,13 +191,15 @@ async def check_sub_expire():
                     user.vpn.ip = None
                     user.vpn.public_key = None
                     user.vpn.updated_at = date
-
-                    await bot.send_message(
-                        user.telegram_id,
-                        messages.OUTDATED_SUB,
-                        reply_markup=expired_user_keyboard(),
-                        parse_mode='Markdown'    
-                        )
+                    try:
+                        await bot.send_message(
+                            user.telegram_id,
+                            messages.OUTDATED_SUB,
+                            reply_markup=expired_user_keyboard(),
+                            parse_mode='Markdown'    
+                            )
+                    except:
+                        pass
             session.add(user)
             session.commit()
     await rebuild_server_config()

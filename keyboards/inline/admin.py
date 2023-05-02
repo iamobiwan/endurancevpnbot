@@ -6,7 +6,7 @@ from ..buttons import button_dict
 
 def admin_start_keyboard():
     markup = InlineKeyboardMarkup()
-    check_order_button = InlineKeyboardButton(text='Проверить счет', callback_data='admin_enter_order_id')
+    check_order_button = InlineKeyboardButton(text='\U0001f4b0 Проверить счет', callback_data='admin_enter_order_id')
     markup.row(check_order_button)
     return markup
 

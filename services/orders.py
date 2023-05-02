@@ -103,7 +103,6 @@ def check_order(order):
         operations = None
     if operations:
         if operations[0].get('status') == 'success':
-            logger.info(f'Счет {order.id} оплачен.')
             return True
     else:
         return False
