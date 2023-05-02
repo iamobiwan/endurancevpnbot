@@ -40,6 +40,7 @@ async def my_sub(callback: types.CallbackQuery, state: FSMContext):
     else:
         await callback.message.edit_text(
             messages.MY_SUB.format(
+                id=user_data.get('id'),
                 status=status.USER_STATUS.get(user_status),
                 date=user_data.get('expires_at')
                 ),
