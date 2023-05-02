@@ -97,7 +97,6 @@ async def check_pending_orders():
             await rebuild_server_config()
 
 async def check_pending_vpn():
-    logger.info('Проверка ожидающих VPN...')
     with session_maker() as session:
         vpns = session.query(Vpn).filter(Vpn.status == 'pending').all()
         if vpns:
