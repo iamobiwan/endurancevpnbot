@@ -29,3 +29,10 @@ async def extend_user_sub(edit_user_id, sub_days):
 
 async def end_user_sub(edit_user_id):
     pass
+
+async def set_discount(user_id, discount):
+    with session_maker() as session:
+        user: User = session.query(User).filter(User.id == user_id).first()
+        user.discount = discount
+        session.add(user)
+        session.commit()

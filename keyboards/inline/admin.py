@@ -11,8 +11,10 @@ def admin_start_keyboard():
     markup = InlineKeyboardMarkup()
     check_order_button = InlineKeyboardButton(text='\U0001f4b0 Проверить счет', callback_data='admin_enter_order_id')
     extend_sub_button = InlineKeyboardButton(text='\U00002b50 Управление подписками', callback_data='admin_manage_sub')
+    add_discount_button = InlineKeyboardButton(text='\U0001f4b5 Добавить скидку', callback_data='admin_set_discount')
     markup.row(check_order_button)
     markup.row(extend_sub_button)
+    markup.row(add_discount_button)
     return markup
 
 def admin_user_sub_keyboard():
