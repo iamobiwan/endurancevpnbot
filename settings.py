@@ -13,6 +13,8 @@ MAX_ORDERS_CNT = 3
 DONATE_URL = "https://yoomoney.ru/quickpay/confirm.xml?receiver={wallet}\
 &quickpay-form=shop&sum={amount}&label={label}"
 
+ORDER_NOTIFICATION = 1
+
 PENDING_ORDER_TTL = 2 # время жизни счета на оплату
 
 MAX_SERVER_USER_COUNT = 50

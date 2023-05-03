@@ -80,7 +80,19 @@ async def check_pending_orders():
 
                 else: # если заказ не оплачен проверяем, протух ли он
                     diff: timedelta = datetime.now() - order.created_at
-                    if diff.days > settings.PENDING_ORDER_TTL:
+                    if diff.days == settings.ORDER_NOTIFICATION:
+                        try:
+                            await bot.send_message(
+                                chat_id=order.user.telegram_id,
+                                text=messages.NOTIFY_DELETE_ORDER.format(
+                                    id=order.id,
+                                    amount=order.amount,
+                                    status=order.status
+                                    )
+                                )
+                        except:
+                            pass
+                    elif diff.days > settings.PENDING_ORDER_TTL:
                         order.deleted = True
                         order.status = 'expired'
                         order.updated_at = datetime.now()
