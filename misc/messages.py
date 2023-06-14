@@ -218,3 +218,6 @@ ADMIN_ENTER_DISCOUNT = """Введите ID пользователя и разм
 ADMIN_USER_ACTIONS = """Что делаем с пользователем?"""
 ADMIN_SUB_UPDATED = """Подписка пользователя ID {id} изменена!"""
 ADMIN_DISCOUNT_UPDATED = """Для пользователя ID {id} установлена скидка {discount}!"""
+ADMIN_START_REBUILD_SERVER_CONF = """Обновление кофигурации на серверах запущено..."""
+ADMIN_FINISH_REBUILD_SERVER_CONF = """Обновление конфигурации успешно завершено!"""
+ADMIN_ERROR_REBUILD_SERVER_CONF = """Ошибка при обновлении конфигурации, смотри логи!"""

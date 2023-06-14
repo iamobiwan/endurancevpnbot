@@ -12,9 +12,11 @@ def admin_start_keyboard():
     check_order_button = InlineKeyboardButton(text='\U0001f4b0 Проверить счет', callback_data='admin_enter_order_id')
     extend_sub_button = InlineKeyboardButton(text='\U00002b50 Управление подписками', callback_data='admin_manage_sub')
     add_discount_button = InlineKeyboardButton(text='\U0001f4b5 Добавить скидку', callback_data='admin_set_discount')
+    rebuild_server_config = InlineKeyboardButton(text='\U0001f6e0 Обновить конфигурацию серверов', callback_data='admin_rebuild_server_config')
     markup.row(check_order_button)
     markup.row(extend_sub_button)
     markup.row(add_discount_button)
+    markup.row(rebuild_server_config)
     return markup
 
 def admin_user_sub_keyboard():
