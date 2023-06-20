@@ -14,11 +14,13 @@ def admin_start_keyboard():
     add_discount_button = InlineKeyboardButton(text='\U0001f4b5 Добавить скидку', callback_data='admin_set_discount')
     rebuild_server_config = InlineKeyboardButton(text='\U0001f6e0 Обновить конфигурацию серверов', callback_data='admin_rebuild_server_config')
     test_btn = InlineKeyboardButton(text='\U0001f6e0 Тест кнопка', callback_data='admin_test')
+    reset_vpn = InlineKeyboardButton(text='\U0001f310 Обнулить VPN', callback_data='admin_reset_vpn')
     markup.row(check_order_button)
     markup.row(extend_sub_button)
     markup.row(add_discount_button)
     markup.row(rebuild_server_config)
     # markup.row(test_btn)
+    markup.row(reset_vpn)
     return markup
 
 def admin_user_sub_keyboard():

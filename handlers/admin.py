@@ -4,7 +4,7 @@ from misc import messages
 from keyboards.inline import admin
 from services.orders import check_order, get_order
 from states import AdminBotStates, BotStates
-from services.admin import extend_user_sub, end_user_sub, set_discount, test
+from services.admin import extend_user_sub, end_user_sub, set_discount, test, reset_user_vpn
 from services.actions import rebuild_server_config
 
 
@@ -152,6 +152,30 @@ async def admin_rebuild_server_config(callback: types.CallbackQuery, state: FSMC
         await callback.message.answer(messages.ADMIN_START_REBUILD_SERVER_CONF)
         await rebuild_server_config()
 
+async def admin_enter_user_id_for_vpn_reset(callback: types.CallbackQuery, state: FSMContext):
+    """Ввод user_id"""
+    if callback.from_user.id in callback.bot.get('config').tg_bot.admin_ids:
+        await callback.message.edit_text(messages.ADMIN_ENTER_USER_ID)
+        await AdminBotStates.USER_ID_VPN.set()
+
+async def admin_reset_vpn(message : types.Message, state: FSMContext):
+    """Сброс VPN до статуса created"""
+    if message.from_user.id in message.bot.get('config').tg_bot.admin_ids:
+        try:
+            user_id = int(message.text)
+        except:
+            await message.answer(
+                messages.ADMIN_INT_ERROR,
+                parse_mode='Markdown',
+                reply_markup=admin.back_admin_start_keyboard()
+            )
+            await BotStates.MAIN.set()
+            return
+        await reset_user_vpn(user_id)
+        await message.answer(messages.ADMIN_VPN_RESETED.format(id=user_id),
+                            reply_markup=admin.back_admin_start_keyboard())
+        await BotStates.MAIN.set()
+
 async def admin_test_btn(callback: types.CallbackQuery, state: FSMContext):
     if callback.from_user.id in callback.bot.get('config').tg_bot.admin_ids:
         # test()
@@ -167,7 +191,9 @@ def register_admin_handlers(dp : Dispatcher):
     dp.register_message_handler(admin_actions_sub, state=AdminBotStates.USER_ID_SUB)
     dp.register_message_handler(admin_extend_sub, state=AdminBotStates.DAYS_EXTEND)
     dp.register_message_handler(admin_discount, state=AdminBotStates.SET_DISCOUNT)
+    dp.register_message_handler(admin_reset_vpn, state=AdminBotStates.USER_ID_VPN)
     dp.register_callback_query_handler(admin_enter_order_id, text='admin_enter_order_id', state='*')
+    dp.register_callback_query_handler(admin_enter_user_id_for_vpn_reset, text='admin_reset_vpn', state='*')
     dp.register_callback_query_handler(admin_start, text='back_admin_menu', state='*')
     dp.register_callback_query_handler(admin_enter_user_id, text='admin_manage_sub', state='*')
     dp.register_callback_query_handler(admin_extend_sub_enter_days, text='admin_extend_sub', state='*')

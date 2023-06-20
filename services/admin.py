@@ -27,6 +27,18 @@ async def extend_user_sub(edit_user_id, sub_days):
         session.add(user)
         session.commit()
             
+async def reset_user_vpn(user_id):
+    with session_maker() as session:
+        user: User = session.query(User).filter(User.id == user_id).first()
+        user_state: FSMContext = dp.current_state(user=user.telegram_id, chat=user.chat_id)
+        await user_state.update_data(vpn_status='created')
+        user.vpn.status = 'created'
+        user.vpn.server_id = None
+        user.vpn.ip = None
+        user.vpn.public_key = None
+        user.vpn.updated_at = datetime.now()
+        session.add(user)
+        session.commit()
 
 async def end_user_sub(edit_user_id):
     pass
