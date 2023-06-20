@@ -4,7 +4,7 @@ from misc import messages
 from keyboards.inline import admin
 from services.orders import check_order, get_order
 from states import AdminBotStates, BotStates
-from services.admin import extend_user_sub, end_user_sub, set_discount
+from services.admin import extend_user_sub, end_user_sub, set_discount, test
 from services.actions import rebuild_server_config
 
 
@@ -152,6 +152,11 @@ async def admin_rebuild_server_config(callback: types.CallbackQuery, state: FSMC
         await callback.message.answer(messages.ADMIN_START_REBUILD_SERVER_CONF)
         await rebuild_server_config()
 
+async def admin_test_btn(callback: types.CallbackQuery, state: FSMContext):
+    if callback.from_user.id in callback.bot.get('config').tg_bot.admin_ids:
+        # test()
+        await callback.answer()
+
 
 
 
@@ -169,3 +174,4 @@ def register_admin_handlers(dp : Dispatcher):
     dp.register_callback_query_handler(admin_end_sub, text='admin_end_sub', state='*')
     dp.register_callback_query_handler(admin_set_discount, text='admin_set_discount', state='*')
     dp.register_callback_query_handler(admin_rebuild_server_config, text='admin_rebuild_server_config', state='*')
+    dp.register_callback_query_handler(admin_test_btn, text='admin_test', state='*')
