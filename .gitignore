@@ -5,3 +5,4 @@ logs/
 migrations.py
 /servers
 /users
+.vscode/

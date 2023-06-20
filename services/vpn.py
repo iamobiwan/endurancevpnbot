@@ -1,6 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from db.connect import session_maker
 from db.models import User, Vpn, Server
 from keyboards.inline.main import back_main_keyboard
@@ -80,11 +80,15 @@ async def generate_vpn_settings(user_state):
 def choose_server():
     """ Выбираем сервер для пользователя """
     with session_maker() as session:
-        servers = session.query(Server).all()
-        for server in servers:
-            users_cnt = session.query(Vpn).where(Vpn.server_id == server.id).count()
-            if users_cnt < settings.MAX_SERVER_USER_COUNT:                       
-                return server
+        with session_maker() as session:
+            servers = session.query(Server).all()
+            user_cnt_dict = {}
+            for server in servers:
+                server_user_cnt = session.query(Vpn).where(Vpn.server_id == server.id).count()
+                user_cnt_dict[server.id] = server_user_cnt
+            server_id_with_min_user_cnt = min(user_cnt_dict, key=user_cnt_dict.get)
+            server = session.query(Server).where(Server.id == server_id_with_min_user_cnt).first()
+            return server
 
 def choose_ip(server: Server):
     """ Генерируем IP, чтобы не совпадал с уже имеющимися"""
@@ -107,7 +111,7 @@ async def update_server_config(server: Server):
         with open(f'servers/{server.name}/{server.name}_wg0.conf', 'r') as file:
             text = file.read()
         for user in users:
-            if user.vpn.status == 'executed':
+            if user.vpn.status == 'executed' and user.vpn.server_id == server.id:
                 text += f'\n#user_{user.id}\n'\
                         f'[Peer]\n'\
                         f'PublicKey = {user.vpn.public_key}\n'\

@@ -8,5 +8,6 @@ class BotStates(StatesGroup):
 class AdminBotStates(StatesGroup):
     ORDER_ID = State()
     USER_ID_SUB = State()
+    USER_ID_VPN = State()
     DAYS_EXTEND = State()
     SET_DISCOUNT = State()
