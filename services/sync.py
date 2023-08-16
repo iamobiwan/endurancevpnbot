@@ -36,6 +36,7 @@ async def sync_config(server: Server):
                 parse_mode='Markdown'
             )
             logger.warning(f'Синхронизация сервера {server.name}не выполнена')
+    client.close()
 
 
 @logger.catch
@@ -73,4 +74,5 @@ async def check_config(server: Server):
                 parse_mode='Markdown'
             )
             logger.warning(f'Проверка сервера {server.name} не выполнена')
+    client.close()
 
