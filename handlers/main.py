@@ -55,29 +55,32 @@ async def main(callback: types.CallbackQuery, state: FSMContext):
 async def main_handler(message: types.Message, state: FSMContext):
     """ Главное меню (обработка c message handler)"""
     user_data = await state.get_data()
-    
-    if user_data:
-        if user_data.get('status') in ['expired', 'outdated']:
-            await message.answer(
-                messages.MAIN_MENU_EXPIRED,
-                parse_mode='Markdown',
-                reply_markup=expired_user_keyboard()
+    await message.answer(
+                messages.MAIN_MENU_CREATED,
+                parse_mode='Markdown'
             )
-        elif user_data.get('status') == 'created':
-            await message.answer(
-                messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
-                parse_mode='Markdown',
-                reply_markup=created_user_keyboard(user_data.get('id'))
-            )
-        else:
-            await message.answer(
-                messages.MAIN_MENU,
-                parse_mode='Markdown',
-                reply_markup=main_keyboard()
-            )
+    # if user_data:
+    #     if user_data.get('status') in ['expired', 'outdated']:
+    #         await message.answer(
+    #             messages.MAIN_MENU_EXPIRED,
+    #             parse_mode='Markdown',
+    #             reply_markup=expired_user_keyboard()
+    #         )
+    #     elif user_data.get('status') == 'created':
+    #         await message.answer(
+    #             messages.MAIN_MENU_CREATED.format(name=user_data.get('name')),
+    #             parse_mode='Markdown',
+    #             reply_markup=created_user_keyboard(user_data.get('id'))
+    #         )
+    #     else:
+    #         await message.answer(
+    #             messages.MAIN_MENU,
+    #             parse_mode='Markdown',
+    #             reply_markup=main_keyboard()
+    #         )
 
 
 def register_main_handlers(dp : Dispatcher):
     dp.register_message_handler(start, commands=['start'], state='*')
     dp.register_message_handler(main_handler, commands=['main'], state='*')
-    dp.register_callback_query_handler(main, regexp=r"(^main$|^back_main$)", state='*')
+    # dp.register_callback_query_handler(main, regexp=r"(^main$|^back_main$)", state='*')
