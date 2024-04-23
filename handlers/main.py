@@ -10,23 +10,23 @@ from states import BotStates
 
 async def start(message : types.Message, state: FSMContext):
     """ Приветствие """
-    user: User = get_user(message.from_user.id)
+    # user: User = get_user(message.from_user.id)
 
-    if not user:
-        user: User = create_user(message)
-        create_vpn(user)
-        await state.update_data(
-            id=user.id,
-            telegram_id=user.telegram_id,
-            chat_id=user.chat_id,
-            status=user.status,
-            vpn_status='created',
-            name=user.name
-        )
+    # if not user:
+    #     user: User = create_user(message)
+    #     create_vpn(user)
+    #     await state.update_data(
+    #         id=user.id,
+    #         telegram_id=user.telegram_id,
+    #         chat_id=user.chat_id,
+    #         status=user.status,
+    #         vpn_status='created',
+    #         name=user.name
+    #     )
     await message.answer(
         messages.WELCOME,
         parse_mode='Markdown',
-        reply_markup=start_main()
+        # reply_markup=start_main()
     )
 
 async def main(callback: types.CallbackQuery, state: FSMContext):
